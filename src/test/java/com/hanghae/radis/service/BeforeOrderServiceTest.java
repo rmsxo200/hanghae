@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BeforeOrderServiceTest {
     private final BeforeOrderService service = new BeforeOrderService();
@@ -42,8 +43,14 @@ public class BeforeOrderServiceTest {
         int actualStock = service.getStock(productName);
 
         System.out.println("Expected Stock: " + expectedStock + ", Actual Stock: " + actualStock);
+        System.out.println("최근 주문 ["
+                + "상품명: " + service.getLatestOrder(productName).getProductName()
+                + ", 상품수: " +  service.getLatestOrder(productName).getAmount() + " 건]");
+
+        // 재고 일치 여부 확인
+        assertEquals(actualStock, expectedStock);
 
         // 동시성 이슈로 인해 재고가 맞지 않는 경우를 확인
-        assertNotEquals(expectedStock, actualStock, "재고 불일치 발생!");
+        //assertNotEquals(expectedStock, actualStock, "재고 불일치 발생!");
     }
 }
